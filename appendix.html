@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>활동 부록 · 개인 성찰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f7f3f0 100%);
+            color: #2c2c2c;
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            margin-top: 8px;
+            margin-bottom: 16px;
+            color: #2c2c2c;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            line-height: 1.75;
+            color: #4a4a4a;
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: clamp(24px, 5vw, 32px);
+            margin-top: 20px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 18px;
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+            border-radius: 14px;
+            border: 2px solid #e8dfd5;
+            margin-top: 16px;
+            background: #fafaf8;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #8b7355;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.1);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #8b7355 0%, #6d5d4b 100%);
+            color: #fff;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 12px rgba(139, 115, 85, 0.2);
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(139, 115, 85, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 탭 네비게이션 */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            text-decoration: none;
+            color: #666;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background: #f9f6f3;
+            color: #2c2c2c;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b7355 0%, #6d5d4b 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);
+        }
+
+        /* 팝업 스타일 */
+        .popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f6f3 100%);
+            padding: clamp(32px, 8vw, 48px);
+            border-radius: 24px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-label {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .popup-text {
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            margin: 20px 0;
+            color: #8b7355;
+            font-weight: 700;
+            line-height: 1.3;
+            word-break: keep-all;
+        }
+
+        .popup-footer {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: #666;
+            margin-top: 12px;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 32px 16px;
+            text-align: center;
+            font-size: clamp(0.8rem, 3vw, 0.85rem);
+            color: #999;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            .tabs {
+                top: 12px;
+                margin-bottom: 20px;
+            }
+
+            .card {
+                margin-top: 16px;
+                padding: 20px;
+            }
+
+            .popup-content {
+                padding: 28px 24px;
+            }
+        }
+
+        /* 다크모드 대응 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+                color: #e0e0e0;
+            }
+
+            .card {
+                background: #333;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .tabs {
+                background: #333;
+            }
+
+            .tab {
+                color: #aaa;
+            }
+
+            .tab:hover {
+                background: #404040;
+                color: #e0e0e0;
+            }
+
+            input {
+                background: #2a2a2a;
+                border-color: #444;
+                color: #e0e0e0;
+            }
+
+            input:focus {
+                background: #333;
+                border-color: #8b7355;
+            }
+
+            .popup-content {
+                background: linear-gradient(135deg, #333 0%, #2a2a2a 100%);
+            }
+
+            h1,
+            h2 {
+                color: #e0e0e0;
+            }
+
+            p {
+                color: #b0b0b0;
+            }
+
+            .popup-label,
+            .popup-footer {
+                color: #aaa;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="tabs">
+            <a class="tab" href="index.html">본문</a>
+            <a class="tab" href="quotes.html">책속으로</a>
+            <a class="tab active" href="appendix.html">활동 부록</a>
+        </nav>
+
+        <h1>활동 부록 · 개인 성찰</h1>
+        <p>아이스 브레이킹을 위해 활동 자료를 준비해 봤습니다. 분위기를 봐서 쓸 수도 있고 안 쓸 수도 있습니다.</p>
+
+        <div class="card">
+            <h2>1. 나는 무엇으로 불리고 있나요?</h2>
+            <input id="callInput" placeholder="회사에서 / 가정에서 / 스스로에게 붙인 이름" />
+            <button class="btn" onclick="openPopup()">카드로 보기</button>
+        </div>
+
+        <div class="card">
+            <h2>2. 하나님은 나를 어떻게 부르실까?</h2>
+            <input id="godInput" placeholder="말씀 한 구절 / 단어 / 이름" />
+            <button class="btn" onclick="openGodPopup()">묵상 카드</button>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <p class="popup-label">나는 지금</p>
+            <h2 id="popupText" class="popup-text"></h2>
+            <p class="popup-footer">로 불리고 있습니다</p>
+            <button class="btn" onclick="closePopup()">닫기</button>
+        </div>
+    </div>
+
+    <div id="godPopup" class="popup">
+        <div class="popup-content">
+            <p class="popup-label">하나님은 나를</p>
+            <h2 id="godPopupText" class="popup-text"></h2>
+            <p class="popup-footer">라고 부르십니다</p>
+            <button class="btn" onclick="closeGodPopup()">닫기</button>
+        </div>
+    </div>
+
+    <footer>
+        2025 신일교회 독서동아리 불독
+    </footer>
+
+    <script>
+        function openPopup() {
+            const v = document.getElementById('callInput').value;
+            if (!v) return alert('입력해주세요');
+            document.getElementById('popupText').innerText = v;
+            document.getElementById('popup').style.display = 'flex';
+        }
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+        function openGodPopup() {
+            const v = document.getElementById('godInput').value;
+            if (!v) return alert('입력해주세요');
+            document.getElementById('godPopupText').innerText = '"' + v + '"';
+            document.getElementById('godPopup').style.display = 'flex';
+        }
+        function closeGodPopup() {
+            document.getElementById('godPopup').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

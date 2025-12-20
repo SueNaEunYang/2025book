@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인용구 모음 · 호명사회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f7f3f0 100%);
+            color: #2c2c2c;
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            line-height: 1.75;
+            color: #4a4a4a;
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+        }
+
+        .quote-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 28px);
+            margin-top: 16px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            border-left: 5px solid #8b7355;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 80px;
+            color: rgba(139, 115, 85, 0.08);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .quote-text {
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+            line-height: 1.85;
+            color: #2c2c2c;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-source {
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            color: #8b7355;
+            text-align: right;
+            font-style: italic;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .section-label {
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: #8b7355;
+            letter-spacing: 0.1em;
+            margin-top: 40px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding-left: 4px;
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f6f3 100%);
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 28px);
+            margin-top: 16px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(139, 115, 85, 0.1);
+        }
+
+        /* 탭 네비게이션 */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            text-decoration: none;
+            color: #666;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background: #f9f6f3;
+            color: #2c2c2c;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b7355 0%, #6d5d4b 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 32px 16px;
+            text-align: center;
+            font-size: clamp(0.8rem, 3vw, 0.85rem);
+            color: #999;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            .tabs {
+                top: 12px;
+                margin-bottom: 20px;
+            }
+
+            .quote-card {
+                margin-top: 12px;
+                padding: 18px;
+            }
+
+            .section-label {
+                margin-top: 28px;
+            }
+        }
+
+        /* 다크모드 대응 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+                color: #e0e0e0;
+            }
+
+            .quote-card,
+            .intro-card {
+                background: #333;
+                border-color: rgba(139, 115, 85, 0.5);
+            }
+
+            .quote-card::before {
+                color: rgba(139, 115, 85, 0.15);
+            }
+
+            .tabs {
+                background: #333;
+            }
+
+            .tab {
+                color: #aaa;
+            }
+
+            .tab:hover {
+                background: #404040;
+                color: #e0e0e0;
+            }
+
+            h1,
+            .quote-text {
+                color: #e0e0e0;
+            }
+
+            p {
+                color: #b0b0b0;
+            }
+
+            .quote-source {
+                color: #a89378;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="tabs">
+            <a class="tab" href="index.html">본문</a>
+            <a class="tab active" href="quotes.html">책속으로</a>
+            <a class="tab" href="appendix.html">활동 부록</a>
+        </nav>
+
+        <h1>인용구 모음</h1>
+        <p>『시대예보: 호명사회』에서 발췌한 핵심 문장들</p>
+
+        <div class="intro-card">
+            <p><strong>책 속 문장들.</strong><br />
+                출판사에서 선별한 인용구들입니다.</p>
+        </div>
+
+        <div class="section-label">예보 · 호명사회</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                지금까지는 대부분의 조직이 상시 고용된 구성원들의 협업에 의해서만 운영되어 왔습니다. 이제는 디지털 전환과 업무 시스템의 도움으로 실시간 소통이 가능해지며 그 협업의 범위가 조직 외부까지
+                확대되었습니다. 더 나아가 AI 기반의 지능화가 결합하면서 각 업무 영역의 완결성은 작은 단위에서도 가져갈 수 있게 되었습니다. 그 분화는 극단적으로 1인 기업이 가능할 만큼 강화됩니다.
+                예를 들어 기존의 광고대행업은 고객상담, 크리에이티브 디렉터, 카피라이터, 행정, 스태프 인력까지 모든 단계에 인원이 필요했습니다. 이제는 생성형 AI와 회계 및 관리 업무 자동화
+                서비스를 이용하여 1인 창작자가 모든 것을 해결하도록 분화될 수 있습니다.
+            </div>
+            <div class="quote-source">― 「예보: 호명사회」 중에서</div>
+        </div>
+
+        <div class="section-label">프롤로그 · 호명사회의 비전</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                각자가 조직에 앞서 이름을 알리고, 스스로 선 핵개인들이 서로 존중하며 교류하는 선택의 연대는 서로를 칭할 때 온전한 그의 이름을 부르는 '호명사회'로 완성됩니다. 각자의 본진으로 진입한
+                개인들이 서로를 존중하고 대등하게 협력하는 사회를 예견합니다. 지금까지의 구조에서 사람들은 새로운 기술로 인간의 소용이 줄어듦을 걱정합니다. 서로를 이름으로 불러주는 새로운 사회 속,
+                각자는 자존을 잃지 않고 서로를 도구화하지 않습니다. 홀로 섰기에 당당하고 자립한 동료가 있기에 외롭지 않은 호명사회는 예전 작은 모둠의 사회에서는 당연했던, 모두가 배제되지 않은 포용적
+                모둠을 만들어나갑니다.
+            </div>
+            <div class="quote-source">― 「프롤로그」 중에서</div>
+        </div>
+
+        <div class="section-label">제1장 · 시뮬레이션 과잉</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                각자에게는 열정과 시간이라는 공통된 자원이 있습니다. 그 자원들을 회사 생활의 '인사고과'에 투자하여 더 높은 점수를 얻기 위해 자발적인 야근을 하고 '상사'를 챙기는 이들도 있습니다.
+                하지만 일찌감치 승진을 포기하고 '언젠가 이직할 거니까'라는 생각으로 자기 계발에 투자하는 이들 역시 늘고 있습니다. 이것은 그들에게 이기적 선택이 아니라 합리적 선택이라 할 수
+                있습니다. 이런 현상들은 앞서 설명한 자동화의 도입과 업무 지원 소프트웨어의 보편화로 '혼자 무언가를 해서 얻을 수 있는 성과'의 총량이 늘어난 것도 있고, 저성장과 산업의 문제로 인해
+                '조직에 헌신해서 얻을 수 있는 성과'의 총량이 줄어든 문제도 있습니다. 마치 시소에서 내 쪽을 누르는 힘과 상대편을 올리는 힘이 모두 작용하는 것처럼 기존 시스템의 역학이 변화하면 어느
+                한쪽으로 기울 수밖에 없습니다.
+            </div>
+            <div class="quote-source">― 「제1장 '시뮬레이션 과잉'」 중에서</div>
+        </div>
+
+        <div class="section-label">제2장 · 상호 경쟁의 인플레이션</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                경쟁이 인플레이션 된다는 것은 두 가지 측면으로 설명해 볼 수 있습니다. 물가가 상승하는 것처럼 우리가 경쟁을 위해 들여야 하는 노력의 비용이 계속해서 증가한다는 뜻입니다. 바로 성공의
+                '값'이 비싸지는 것입니다. 그리고 화폐가치가 하락하는 것처럼 우리가 들이는 시간과 열정의 값어치가 모두 하락한다는 것입니다. 이를 '대다수를 패배자로 만드는' 상호 경쟁의 인플레이션
+                격화라고 말했습니다.
+            </div>
+            <div class="quote-source">― 「제2장 '상호 경쟁의 인플레이션'」 중에서</div>
+        </div>
+
+        <div class="section-label">제3장 · 호오에서 자립을 찾다</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                N잡러가 되기 위해서는 먼저 '본인의 잡(job)'인 '본진'이 있어야 한다는 사실입니다. '본진'이라 함은 순전히 직무 혹은 소득을 벌기 위한 수단이라기보다 자신의 정체성이 자리매김하는
+                고유 영역을 뜻합니다. 본진도 없이 곡예사처럼 N개의 일을 저글링 하는 것은 정체성의 기반이 없음을 고백하는 것과 같습니다. 공공사업에 참여하고, 개인적으로 글도 쓰고, 사람들과 연계해서
+                모임도 갖는 등 여러 가지를 해도 그중 어떤 것도 자립할 수 있는 업이 되지 못한다면, 마치 작은 부품을 모아 커다란 합체 로봇을 만들어도 끝내 젖은 볏단처럼 서지 못하는 것과 같습니다.
+                가장 중심에 있어야 할 코어가 불안정하고 본인이 가지고 있는 정체성이 흔들리기 때문입니다. 결국 누구에게 물어보더라도 그 사람이 어떤 사람인지 설명할 수 없는 불안한 구조가 나오게
+                됩니다.
+            </div>
+            <div class="quote-source">― 「제3장 '호오에서 자립을 찾다'」 중에서</div>
+        </div>
+
+        <div class="section-label">제4장 · 선택의 연대</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                우리가 맺는 수많은 관계에는 다양한 종류가 있습니다. 기업이 미래 지향적인 신규 사업과 안정적인 기존 사업을 구분하여 투자하는 것처럼 개인의 관계 포트폴리오 역시 다양하게 구성하는 것이
+                중요합니다. 개인의 행복에 있어 관계의 깊이만큼이나 관계의 다양성이 큰 역할을 하기 때문입니다. 사람마다 관계의 성격과 그 보답이 돌아오는 주기는 다양합니다. 그러므로 일시적인 기쁨이나
+                슬픔에 휘둘리지 않으려면 보답이 불확실해 보이더라도 먼저 손을 내미는 다정함이 필요합니다. 그렇게 맺은 관계들로부터 장기적으로 더 많은 기회를 얻어 결과가 돌아오는 빈도를 늘려야 합니다.
+                다정함과 적절한 거리감 사이에서 황금률을 찾는 것은 자기 이름을 걸고 자기 일을 찾아가는 모든 이에게 필요한 행동입니다. 그러나 어떤 종류의 직업을 갖든, 어떤 장르를 선택하든 중요한
+                것은 '나'에서 시작하여 주변 네트워크로 퍼져나가는 연대의 힘입니다. 불쑥 친한 척을 하며 상대와의 거리를 좁히는 것도 아니고, 자기 일에 바빠 상대에 대한 배려를 놓치는 것도 아닌,
+                다정함과 적절한 거리의 골디락스 존이 확장하는 연대를 위한 전제라 할 수 있습니다.
+            </div>
+            <div class="quote-source">― 「제4장 '선택의 연대'」 중에서</div>
+        </div>
+
+        <div class="section-label">제5장 · 호명사회의 도래</div>
+
+        <div class="quote-card">
+            <div class="quote-text">
+                내가 교류해 온 사람들의 교집합이 곧 '나'입니다. 그리고 내가 남긴 글이 '나'입니다. 내가 좋아해서 시간과 열정을 쏟았던 일들이 '나'입니다. 내가 남긴 나의 모든 흔적이 바로
+                '나'입니다. 그 자료들을 통해 '나'의 안에서 답을 찾는 과정이 필요합니다. 정보의 과잉으로 지금 당장 한 걸음을 떼지 못할 때, 가장 먼저 해야 할 일은 저 멀리 먼 미래를 보는 것이
+                아니라 '나'로부터 시작하는 것입니다. 머릿속 시도만으로 지쳐서 한 발짝도 못 내딛던 각자가 이제 새로운 출발선에서 첫걸음을 걷고자 할 때, 그 방향은 밖이 아닌 '나'로 향함을 알 수
+                있습니다. 그다음은 '세상에 불릴 나의 이름이 무엇인가?'를 결정하는 것입니다. '나'는 어느 조직의 대리, 과장, 부장이 아닙니다. 누군가의 자녀, 누군가의 부모, 누군가의 친구도
+                아닙니다. 조직과 관계에서 벗어나 온전히 나는 누구인가 정의하는 것이 출발에 선 '나의 이름'입니다.
+            </div>
+            <div class="quote-source">― 「제5장 '호명사회의 도래'」 중에서</div>
+        </div>
+    </div>
+
+    <footer>
+        2025 신일교회 독서동아리 불독
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>시대예보: 호명사회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f7f3f0 100%);
+            color: #2c2c2c;
+            line-height: 1.7;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: clamp(1.1rem, 4vw, 1.35rem);
+            margin-top: 24px;
+            color: #2c2c2c;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            line-height: 1.75;
+            color: #4a4a4a;
+            font-size: clamp(0.95rem, 3.5vw, 1.05rem);
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: clamp(20px, 5vw, 28px);
+            margin-top: 16px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-label {
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            color: #8b7355;
+            letter-spacing: 0.1em;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4c4b0, transparent);
+            margin: 40px 0;
+        }
+
+        /* 탭 네비게이션 */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #ffffff;
+            padding: 6px;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            text-decoration: none;
+            color: #666;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: #f9f6f3;
+            color: #2c2c2c;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8b7355 0%, #6d5d4b 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(139, 115, 85, 0.3);
+        }
+
+        /* 질문 카드 */
+        .question-box {
+            margin-top: 18px;
+            padding: clamp(16px, 4vw, 20px);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f9f6f3 0%, #f5f0eb 100%);
+            border-left: 4px solid #8b7355;
+        }
+
+        .question-label {
+            font-size: clamp(0.85rem, 3vw, 0.9rem);
+            color: #8b7355;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: clamp(1rem, 3.5vw, 1.1rem);
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 32px 16px;
+            text-align: center;
+            font-size: clamp(0.8rem, 3vw, 0.85rem);
+            color: #999;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
+        }
+
+        /* 모바일 최적화 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            .tabs {
+                top: 12px;
+                margin-bottom: 20px;
+            }
+
+            .card {
+                margin-top: 12px;
+            }
+
+            .section-label {
+                margin-top: 24px;
+            }
+        }
+
+        /* 다크모드 대응 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+                color: #e0e0e0;
+            }
+
+            .card {
+                background: #333;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .tabs {
+                background: #333;
+            }
+
+            .tab {
+                color: #aaa;
+            }
+
+            .tab:hover {
+                background: #404040;
+                color: #e0e0e0;
+            }
+
+            .question-box {
+                background: linear-gradient(135deg, #3a3a3a 0%, #2f2f2f 100%);
+            }
+
+            h1,
+            h2,
+            .question-text {
+                color: #e0e0e0;
+            }
+
+            p {
+                color: #b0b0b0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="tabs">
+            <a class="tab active" href="index.html">본문</a>
+            <a class="tab" href="quotes.html">책속으로</a>
+            <a class="tab" href="appendix.html">활동 부록</a>
+        </nav>
+
+        <h1>시대예보: 호명사회</h1>
+        <p>송길영 『시대예보: 호명사회』 발제 정리</p>
+
+        <div class="card">
+            <p><strong>AI와 함께한 요약</strong><br />
+                이 페이지는 『시대예보: 호명사회』의 핵심 논지를 AI와 함께 요약한 것 입니다.</p>
+        </div>
+
+        <div class="section-label">1. 호명</div>
+        <div class="card">
+            <h2>우리는 왜 이름으로 불리게 되었는가</h2>
+            <p>저자는 오늘의 사회를 개인이 사회와 직접 연결된 구조로 설명합니다. 과거에는 조직, 직함, 공동체가 개인을 감싸는 완충 지대였지만, 이 구조들은 빠르게 약화되었습니다.</p>
+            <p>그 결과 사회는 개인을 역할이나 직함이 아닌, 이름으로 직접 부르기 시작했습니다. 이것이 '호명사회'입니다.</p>
+            <p>이 호명은 인정의 표현이라기보다, 구조 변화의 결과입니다.</p>
+        </div>
+
+        <div class="section-label">2. 부담</div>
+        <div class="card">
+            <h2>호명은 왜 짐이 되는가</h2>
+            <p>이름으로 불린다는 것은 선택의 자유를 의미하는 동시에, 선택의 결과를 전적으로 개인이 책임져야 한다는 뜻이기도 합니다.</p>
+            <p>사회는 우리를 자주 부르지만, 그 결과에 대해서는 함께 책임지지 않습니다. 성공은 개인의 역량이 되고, 실패는 개인의 준비 부족이 됩니다.</p>
+            <p>이때부터 개인은 끊임없이 자신을 증명해야 하는 존재가 됩니다.</p>
+        </div>
+
+        <div class="section-label">3. 불안</div>
+        <div class="card">
+            <h2>과잉 시뮬레이션의 시대</h2>
+            <p>이러한 구조 속에서 불안은 개인의 성격 문제가 아니라 사회적 결과로 나타납니다.</p>
+            <p>아직 오지 않은 미래를 대비하지 않으면 도태될 것 같은 감각, 쉬고 있으면 뒤처질 것 같은 압박이 일상화됩니다.</p>
+            <p>송길영은 이를 '과잉 시뮬레이션'이라 부르며, 개인이 미래를 혼자 책임져야 한다는 감각이 불안을 키운다고 설명합니다.</p>
+        </div>
+
+        <div class="section-label">4. AI 시대의 호명</div>
+        <div class="card">
+            <h2>능력이 분리되는 시대</h2>
+            <p>AI의 등장은 인간의 능력을 개인으로부터 분리해 냅니다. 과거에는 능력이 곧 사람이었지만, 이제 능력은 시스템에 저장되고 호출됩니다.</p>
+            <p>사람은 유능해서 불리기보다, 지금 필요한 역할이 있어서 호출됩니다. 그만큼 호명은 잦아지고, 개인의 대체 가능성에 대한 감각은 커집니다.</p>
+            <p>이로 인해 개인은 더 쉽게 불리고, 더 쉽게 교체될 수 있다는 불안을 경험하게 됩니다.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card">
+            <p><strong>여기까지가 책이 제시하는 시대의 진단입니다.</strong><br />
+                이제 이 진단 위에 질문을 올려놓을 차례입니다.</p>
+
+            <div class="question-box">
+                <p class="question-label">발제 질문 ① (수정 예정)</p>
+                <p class="question-text">[여기에 첫 번째 질문을 입력하세요]</p>
+            </div>
+
+            <div class="question-box">
+                <p class="question-label">발제 질문 ②</p>
+                <p class="question-text">[여기에 두 번째 질문을 입력하세요]</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        2025 신일교회 독서동아리 불독
+    </footer>
+</body>
+
+</html>
